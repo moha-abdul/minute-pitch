@@ -1,6 +1,8 @@
-from flask import render_template
+from flask import render_template,request,redirect,url_for,abort
+from ..models import Role, User
 from . import main
-from .forms import LoginForm
+from .forms import UpdateProfile
+from .. import db
 from flask_login import login_required
 
 #views
@@ -12,18 +14,30 @@ def index():
     '''
     return render_template('index.html')
 
-# @main.route('/login')
-# def login():
+@main.route('/user/<username>')
+def profile(username):
+    user = User.query.filter_by(username = username).first()
 
-#     '''
-#     View of root page function that returns the login page and its data
-#     '''
-#     return render_template('login.html')
+    if user is None:
+        abort(404)
 
-# @main.route('/register')
-# def register():
+    return render_template("profile/profile.html", user = user)
 
-#     '''
-#     View of root page function that returns the registration page and its data
-#     '''
-#     return render_template('register.html')
+@main.route('/user/<uname>/update',methods = ['GET','POST'])
+@login_required
+def update_profile(uname):
+    user = User.query.filter_by(username = username).first()
+    if user is None:
+        abort(404)
+
+    form = UpdateProfile()
+
+    if form.validate_on_submit():
+        user.bio = form.bio.data
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('.profile',username=user.username))
+
+    return render_template('profile/update.html',form =form)
