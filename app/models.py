@@ -7,9 +7,10 @@ class User(UserMixin,db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255))
-    email = db.Column(db.String(255),unique = True,index = True)
+    email = db.Column(db.String(255))
     role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
-    pass_secure = db.Column(db.String(255))
+    password_hash = db.Column(db.String(255))
+    # pass_secure = db.Column(db.String(255))
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
 
@@ -37,7 +38,9 @@ class User(UserMixin,db.Model):
         return check_password_hash(self.pass_secure,password)
 
     
-
+    '''
+    @login_manage.user_loader that modifies the load_user function by passing in a user_id to the function that queries the database and gets a User with that ID
+    '''
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))

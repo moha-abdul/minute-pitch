@@ -16,6 +16,11 @@ def index():
 
 @main.route('/user/<username>')
 def profile(username):
+
+    '''
+    View of page function that returns the the user's profile
+    '''
+
     user = User.query.filter_by(username = username).first()
 
     if user is None:
@@ -23,9 +28,9 @@ def profile(username):
 
     return render_template("profile/profile.html", user = user)
 
-@main.route('/user/<uname>/update',methods = ['GET','POST'])
+@main.route('/user/<username>/update',methods = ['GET','POST'])
 @login_required
-def update_profile(uname):
+def update_profile(username):
     user = User.query.filter_by(username = username).first()
     if user is None:
         abort(404)
