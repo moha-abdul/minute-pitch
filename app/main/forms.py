@@ -9,5 +9,5 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class UpdateProfile(FlaskForm):
-    bio = TextAreaField('Tell us about you.',validators = [Required()])
+    bio = TextAreaField('Tell us about yourself.',validators = [Required()])
     submit = SubmitField('Submit')
