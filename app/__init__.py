@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask import Blueprint
 from flask_mail import Mail
+from flask_simplemde import SimpleMDE
 
 login_manager = LoginManager()
 '''
@@ -19,6 +20,7 @@ bootstrap = Bootstrap()
 db = SQLAlchemy()
 photos = UploadSet('photos',IMAGES)
 mail = Mail()
+simple = SimpleMDE()
 
 def create_app(config_name):
 
@@ -32,6 +34,7 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
+    simple.init_app(app)
 
     
 

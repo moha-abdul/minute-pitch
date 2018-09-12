@@ -3,4 +3,10 @@
 {% include 'navbar.html' %}
 {% block styles %}
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/journal/bootstrap.min.css">
+  {{super()}}
+  <!--Importing the simple mde css and js files  -->
+  {{ simplemde.css}}
+  {{ simplemde.js }}
+
 {% endblock %}
+
