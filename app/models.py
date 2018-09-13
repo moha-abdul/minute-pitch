@@ -14,7 +14,7 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pitches = db.relationship('Pitch',backref = 'user',lazy = "dynamic")
-    # comment = db.relationship('Comment',backref = 'user',lazy = "dynamic")
+    comment = db.relationship('Comment',backref = 'user',lazy = "dynamic")
 
     def __repr__(self):
         return f'User {self.username}'
@@ -63,11 +63,11 @@ class Pitch(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     pitches = db.Column(db.String(255))
     title = db.Column(db.String(255))
-    # comment = db.Column(db.String(255))
+    comment = db.Column(db.String(255))
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     # vote = vote.Column(db.Integer)
-    # comment = db.relationship('Comment',backref = 'pitch',lazy = "dynamic")
+    comment = db.relationship('Comment',backref = 'pitch',lazy = "dynamic")
 
 
     def save_pitch(self):
@@ -78,10 +78,31 @@ class Pitch(db.Model):
         db.session.commit()
 
     @classmethod
+    def get_pitches(id):
+        pitches = Pitch.query.filter_by(id = id).all()
+        return pitches
+
+    @classmethod
     def get_pitch(cls,id):
         '''
         class method will take in a pitch id and retrieve that reviews for that pitch
         '''
-        pitches = Review.query.filter_by(pitch_id=id).all()
+        pitches = Pitch.query.filter_by(pitch_id=id).all()
         return pitches
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer,primary_key = True)
     
+    commented = db.Column(db.String(255))
+    posted = db.Column(db.DateTime,default=datetime.utcnow)
+    user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+    pitch_id = db.Column(db.Integer,db.ForeignKey("pitches.id"))
+
+    def save_comment(self):
+        '''
+        this method will save the instance of the pitch model to the session and commit it to the database
+        '''
+        db.session.add(self)
+        db.session.commit()

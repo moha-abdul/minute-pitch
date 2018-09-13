@@ -1,7 +1,7 @@
 from flask import render_template,request,redirect,url_for,abort,flash
-from ..models import Role, User,Pitch
+from ..models import Role, User,Pitch, Comment
 from . import main
-from .forms import UpdateProfile,NewPitchForm
+from .forms import UpdateProfile,NewPitchForm,CommentForm
 from .. import db,photos
 from flask_login import login_required, current_user
 
@@ -20,7 +20,7 @@ def all_pitches():
     pitches=Pitch.query.all()
     return render_template('all_pitches.html', pitches = pitches)
 
-@main.route('/all_pitches/new_pitch',methods=['GET','POST'])
+@main.route('/new_pitch',methods=['GET','POST'])
 @login_required
 def new_pitch():
     form=NewPitchForm()
@@ -32,9 +32,30 @@ def new_pitch():
         return redirect(url_for('main.all_pitches'))
 
     pitches=Pitch.query.all()
-    return render_template('new_pitch.html',form=form,pitches=pitches)
+    return render_template('all_pitches.html',pitch = pitches)
 
+# @main.route('/new_pitch/<int:id>')
+# @login_required
+# def single_pitch(pitch):
+#     pitch = Pitch.query.get(pitch)
+#     return render_template('single_pitch.html',pitch = pitch)
+    
+    
+    
 
+# @main.route('/single_pitch/new_comment',methods=['GET','POST'])
+# @login_required
+# def new_pitch():
+#     form = CommentForm()
+#     if form.validate_on_submit():
+#         db.session.add(comment)
+#         db.session.commit()
+#         flash('your comment, also created!')
+#         return redirect(url_for('main.single_pitch'))
+
+    # comments = Comment.query.all()
+    # pitches = Pitch.query.filter_by(id = id).first()
+    # return render_template('new_comment.html',form=form,pitches=pitches, comments = comments)
 
 @main.route('/user/<username>')
 def profile(username):

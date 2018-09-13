@@ -10,4 +10,8 @@ class UpdateProfile(FlaskForm):
 class NewPitchForm(FlaskForm):
     title = StringField()
     pitches = TextAreaField('Pitch content', validators=[Required()])
+    user_submitting = TextAreaField('posted by', validators=[Required()])
     submit = SubmitField('Submit')
+
+class CommentForm(FlaskForm):
+    commented = TextAreaField('comment', validators=[Required()])
