@@ -1,5 +1,5 @@
 from flask import render_template,request,redirect,url_for,abort,flash
-from ..models import Role, User,Pitch, Comment
+from ..models import Role, User,Pitch
 from . import main
 from .forms import UpdateProfile,NewPitchForm,CommentForm
 from .. import db,photos
