@@ -1,5 +1,5 @@
-from flask import render_template,request,redirect,url_for,abort
-from ..models import Role, User
+from flask import render_template,request,redirect,url_for,abort,flash
+from ..models import Role, User,Pitch
 from . import main
 from .forms import UpdateProfile,NewPitchForm
 from .. import db,photos
@@ -13,6 +13,28 @@ def index():
     View of root page function that returns the index page and its data
     '''
     return render_template('index.html')
+
+@main.route('/all_pitches')
+@login_required
+def all_pitches():
+    pitches=Pitch.query.all()
+    return render_template('all_pitches.html', pitches = pitches)
+
+@main.route('/all_pitches/new_pitch',methods=['GET','POST'])
+@login_required
+def new_pitch():
+    form=NewPitchForm()
+    if form.validate_on_submit():
+        pitches=Pitch(title=form.title.data,pitches=form.pitches.data)
+        db.session.add(pitches)
+        db.session.commit()
+        flash('your pitch, created!')
+        return redirect(url_for('main.all_pitches'))
+
+    pitches=Pitch.query.all()
+    return render_template('new_pitch.html',form=form,pitches=pitches)
+
+
 
 @main.route('/user/<username>')
 def profile(username):
@@ -58,32 +80,3 @@ def update_pic(username):
         db.session.commit()
     return redirect(url_for('main.profile',username=username))
 
-@main.route('/pitches')
-@login_required
-def pitches(pitch_id):
-
-    '''
-    View of page function that returns the pitches page and its data
-    '''
-    # pitches = pitches.query.all()
-    return render_template('pitches.html', id = pitch_id, pitch = pitch)
-
-
-@main.route('/user/<username>/pitch/<int:id>', methods = ['GET','POST'])
-@login_required
-def new_pitch(id):
-    pitch_form = PitchForm()
-    pitch = get_pitch(id)
-    if form.validate_on_submit():
-        title = form.title.data
-        pitch = form.pitch.data
-
-        # New pitch instance
-        new_pitch = Pitch(pitch_id=pitch.id, pitch_pitches = pitches,pitch_title=title,pitch_posted = time,user=current_user)
-
-        # save pitch method
-        new_pitch.save_pitch()
-        return redirect(url_for('.pitch',id = pitch.id ))
-
-    title = f'{pitch.title} pitch'
-    return render_template('new_pitch.html',title = title, pitch_form=form, pitch=pitch)

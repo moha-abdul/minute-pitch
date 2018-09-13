@@ -6,12 +6,11 @@
 		{% if current_user.is_authenticated %}
 			<li class="nav-item active" style="color:rgb(255, 255, 255);padding:15px;"><a href="{{url_for('main.profile',username=current_user.username)}}">Profile</a></li>
 			<li class="nav-item active" style="color:rgb(255, 255, 255);padding:15px;"><a href="{{url_for('auth.logout')}}">Sign out</a></li>
-			<li class="nav-item active" style="color:rgb(255, 255, 255);padding:15px;"><a href="{{url_for('main.pitches')}}">Pitches</a></li>
+			<li class="nav-item active" style="color:rgb(255, 255, 255);padding:15px;"><a href="{{url_for('main.all_pitches')}}">All Pitches</a></li>
 			<li class="nav-item active" style="color:rgb(255, 255, 255);padding:15px;">{{current_user.username}}</li>
 		{% else %}
 			<li class="nav-item active" style="color:rgb(255, 255, 255);padding:15px;"><a href="{{url_for('auth.login')}}">Sign in</a></li>
 		{% endif %}
 		</ul>
-	<!-- </ul> -->
 	</div>
 </nav>

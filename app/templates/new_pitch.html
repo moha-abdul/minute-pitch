@@ -1,9 +1,52 @@
 {% extends 'base.html' %}
 {% import 'bootstrap/wtf.html' as wtf%}
-
+{% import 'macros.html' as macro %}
+{% block navbar %}
+  {% include 'navbar.html'%}
+{% endblock %}
 {% block content %}
-    <div>
-        {{ wtf.quick_form(pitch_form) }}
-        {{simplemde.load}}
-    </div>
-{% endblock  %}
+
+<div class="container-fluid">
+  <h1 class="text-center">Let's get Pitching</h1>
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <div class="form-group">
+                {{ form.title.label(class="form-control-label") }}
+                {% if form.title.errors %}
+                    {{ form.title(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.title.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.title(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.pitches.label(class="form-control-label") }}
+                {% if form.pitches.errors %}
+                    {{ form.pitches(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.pitches.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.pitches(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+
+</div>
+
+</div>
+
+{% endblock content %}

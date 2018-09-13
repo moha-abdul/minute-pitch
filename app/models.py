@@ -58,7 +58,7 @@ class Role(db.Model):
         return f'User {self.name}'
 
 class Pitch(db.Model):
-    __tablename__ = 'pitch'
+    __tablename__ = 'pitches'
 
     id = db.Column(db.Integer,primary_key = True)
     pitches = db.Column(db.String(255))
@@ -85,31 +85,3 @@ class Pitch(db.Model):
         pitches = Review.query.filter_by(pitch_id=id).all()
         return pitches
     
-class Comment(db.Model):
-
-    __tablename__ = 'comment'
-
-    id = db.Column(db.Integer, primary_key=True)
-    post_comment = db.Column(db.String(255), index=True)
-    # user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    # pitch = db.Column(db.Integer, db.ForeignKey('pitch.id'))
-    time = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def save_comment(self):
-        '''
-        this method saves comments
-        '''
-        db.session.add(self)
-        db.session.commit()
-    
-    @classmethod
-    def get_comments(cls, id):
-        '''
-        this class method displays comments
-        '''
-        comments = Comment.query.filter_by(pitch_id=id).all()
-        return comments
-    
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    comment = db.Column(db.String(255))

@@ -1,0 +1,13 @@
+{% macro displayPitches(pitches) %}
+{% for pitches in pitches %}
+
+  <div class="card m-7">
+    <div class="card-header">
+      <h3 class="card-title">{{pitches.title}}</h3>
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{pitches.pitches}}</p>
+    </div>
+  </div>
+    {% endfor %}
+{% endmacro %}
