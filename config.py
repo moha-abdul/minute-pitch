@@ -3,7 +3,6 @@ import os
 class Config:
     #SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://maxa:maxa12345@localhost/pitches'
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    # SQLALCHELMY_TRACK_MODIFICATIONS = False
     '''
      the destination to store images
     '''
@@ -22,7 +21,7 @@ class ProdConfig(Config):
 
 class DevConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://maxa:maxa12345@localhost/pitches'
-    
+
     DEBUG = True
 
 config_options = {
