@@ -14,7 +14,6 @@ login_manager.session_protection attribute provides different security levels li
 '''
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
-# auth = Blueprint('auth',__name__)
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
@@ -43,10 +42,6 @@ def create_app(config_name):
     # Registering the blueprint
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
-
-    # setting config
-    from .requests import configure_request
-    configure_request(app)
 
     # configure UploadSet
     configure_uploads(app,photos)
