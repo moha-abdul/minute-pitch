@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron">
+  <div class="container">
+  <button type="button" class="btn btn-outline-primary"><a href="/pitch/new">New pitch</a></button>
+   <div class="card border-secondary mb-3" style="max-width: 50rem;">
+   <div class="card-header"><h5>{{ pitch.title }}</h5>
+  </div>
+   <div class="card-body text-secondary">
+    <p class="card-text">{{pitch.body}}</p>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}

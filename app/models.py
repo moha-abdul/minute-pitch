@@ -9,7 +9,6 @@ class User(UserMixin,db.Model):
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255))
     email = db.Column(db.String(255))
-    role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(255))
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
@@ -47,26 +46,16 @@ class User(UserMixin,db.Model):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-class Role(db.Model):
-    __tablename__ = 'roles'
-
-    id = db.Column(db.Integer,primary_key = True)
-    name = db.Column(db.String(255))
-    users = db.relationship('User',backref = 'role',lazy="dynamic")
-
-    def __repr__(self):
-        return f'User {self.name}'
 
 class Pitch(db.Model):
     __tablename__ = 'pitches'
 
     id = db.Column(db.Integer,primary_key = True)
-    pitches = db.Column(db.String(255))
+    body = db.Column(db.String(255))
     title = db.Column(db.String(255))
-    comment = db.Column(db.String(255))
+    # comment = db.Column(db.String(255))
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
-    # vote = vote.Column(db.Integer)
     # comment = db.relationship('Comment',backref = 'pitch',lazy = "dynamic")
 
 
@@ -90,24 +79,24 @@ class Pitch(db.Model):
         pitches = Pitch.query.filter_by(pitch_id=id).all()
         return pitches
 
-class Comment(db.Model):
+# class Comment(db.Model):
 
-    __tablename__ = 'comments'
+#     __tablename__ = 'comments'
 
-    id = db.Column(db.Integer, primary_key=True)
-    post_comment = db.Column(db.String(255), index=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    blogs = db.Column(db.Integer, db.ForeignKey('pitches.id'))
-    time = db.Column(db.DateTime, default=datetime.utcnow)
+#     id = db.Column(db.Integer, primary_key=True)
+#     post_comment = db.Column(db.String(255), index=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+#     blogs = db.Column(db.Integer, db.ForeignKey('pitches.id'))
+#     time = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def save_comment(self):
-        '''
-        Save comments
-        '''
-        db.session.add(self)
-        db.session.commit()
+#     def save_comment(self):
+#         '''
+#         Save comments
+#         '''
+#         db.session.add(self)
+#         db.session.commit()
 
-    @classmethod
-    def get_comments(cls, id):
-        comments = Comment.query.filter_by(id=id).all()
-        return comments
+#     @classmethod
+#     def get_comments(cls, id):
+#         comments = Comment.query.filter_by(id=id).all()
+#         return comments

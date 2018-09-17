@@ -1,7 +1,7 @@
 from flask import render_template,request,redirect,url_for,abort,flash
-from ..models import Role, User,Pitch
+from ..models import User,Pitch
 from . import main
-from .forms import UpdateProfile,NewPitchForm,CommentForm
+from .forms import UpdateProfile,PitchForm,CommentForm
 from .. import db,photos
 from flask_login import login_required, current_user
 
@@ -14,25 +14,45 @@ def index():
     '''
     return render_template('index.html')
 
-@main.route('/all_pitches')
+@main.route('/pitches')
 @login_required
-def all_pitches():
-    pitches=Pitch.query.all()
-    return render_template('all_pitches.html', pitches = pitches)
+def pitches():
+    return render_template('pitches.html')
 
-@main.route('/new_pitch',methods=['GET','POST'])
+@main.route('/pitch/new', methods=['GET','POST'])
 @login_required
 def new_pitch():
-    form=NewPitchForm()
-    if form.validate_on_submit():
-        pitches=Pitch(title=form.title.data,pitches=form.pitches.data)
-        db.session.add(pitches)
-        db.session.commit()
-        flash('your pitch, created!')
-        return redirect(url_for('main.all_pitches'))
+    form = PitchForm()
 
-    pitches=Pitch.query.all()
-    return render_template('all_pitches.html',pitch = pitches)
+    if form.validate_on_submit():
+
+        title=form.title.data
+        body=form.body.data
+        pitch = Pitch(title = title, body = body)
+
+        db.session.add(pitch)
+        db.session.commit()
+
+        # blog.save_pitch(pitch)
+        print('mohaaaa, niaje?')
+        flash('Pitch created!')
+        return redirect(url_for('main.single_pitch',id = pitch.id))
+
+    return render_template('newpitch.html', title='New Post', pitch_form=form)
+
+@main.route('/pitch/new/<int:id>')
+def single_pitch(id):
+    pitch = Pitch.query.get(id)
+    return render_template('singlepitch.html', pitch = pitch)
+
+@main.route('/allpitches')
+@login_required
+def pitch_list():
+    # Function that renders the pitches and contents
+
+    pitches = Pitch.query.all()
+
+    return render_template('pitches.html', pitches = pitches)
 
 # @main.route('/new_pitch/<int:id>')
 # @login_required
